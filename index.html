@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Appointment Management</title>
+  <style>
+    form {
+      width: 300px;
+      margin-top: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+    }
+
+    button {
+      background-color: #4caf50;
+      color: white;
+      padding: 10px;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Appointment Management</h2>
+
+  <form id="addAppointmentForm">
+    <label for="aname">Name :</label>
+    <input type="text" id="aname" name="aname" required>
+
+    <label for="time">Time:</label>
+    <input type="time" id="time" name="time" required>
+    
+    <label for="gmail">Email :</label>
+    <input type="text" id="gmail" name="gmail" required>
+
+    <button type="button" onclick="addAppointment()">Add Appointment</button>
+  </form>
+
+  <h2>Appointment Data</h2>
+
+  <table id="appointmentTable">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Time</th>
+        <th>Gmail</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
