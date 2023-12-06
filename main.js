@@ -1,87 +1,96 @@
-// var todo = document.getElementById('todo');
-// var desc = document.getElementById('desc');
-// var myForm = document.getElementById('my-form');
-// var localStorageDataList = document.getElementById("localStorageData");
+var naam = document.getElementById('name');
+var time = document.getElementById('time');
+var gmail = document.getElementById('gmail');
+var myForm = document.getElementById('my-form');
+var localStorageDataList = document.getElementById("localStorageData");
 
-// myForm.addEventListener('submit',addTodo);
+myForm.addEventListener('submit', addTodo);
 
-// // function addItem(e){
-// //     displayLocalStorageData();
-// // }
+function addTodo(e) {
+  e.preventDefault();
 
-// function addTodo(e) {
-//     e.preventDefault();
-//     // Get user input values
-//     const todos = todo.value;
-//     const descs = desc.value;
-//     axios.post('http://localhost:8000/appointments',{
-//         Todo :todos,
-//         Description: descs,
-//         Done: false
-//     })
-//     .then(res => console.log(res))
-//     .catch(err => console.log(err))
-//     displayData();
+  // Get user input values
+  const names = naam.value;
+  const times = time.value;
+  const gmails = gmail.value;
 
-//     todo.value = "";
-//     desc.value = "";
-// }
+  // Simple client-side validation
+  if (!names || !times || !gmails) {
+    alert('Please fill in all fields');
+    return;
+  }
 
-// function displayData() {
-//     localStorageDataList.innerHTML = ""; // Clear previous data
+  axios.post('http://localhost:3000/user/add-user', {
+    name: names,
+    time: times,
+    email: gmails,
+  })
+    .then(res => {
+      console.log(res);
+      displayData();
+      // Optionally update UI or provide feedback to the user upon successful submission
+    })
+    .catch(err => {
+      console.log(err);
+      // Provide user-friendly error message or feedback
+      alert('Error submitting data. Please try again.');
+    })
+    .finally(() => {
+      // Reset form fields after request (whether success or failure)
+      naam.value = "";
+      time.value = "";
+      gmail.value = "";
+    });
+}
 
-//     axios.get('http://localhost:8000/appointments')
-//     .then(res => {
-//         for (let i = 0; i < res.data.length; i++) {
-//             if(res.data[i].Done === false) showAllUsers(res.data[i]);
-//         }
-//         for (let i = 0; i < res.data.length; i++) {
-//             if(res.data[i].Done === true) showAllUsers(res.data[i]);
-//         }
-//     })
-//     .catch(err => console.log(err))
-// }
 
-// window.addEventListener("DOMContentLoaded",()=>{
-//     localStorageDataList.innerHTML = ""; // Clear previous data
+function displayData() {
+  localStorageDataList.innerHTML = ""; // Clear previous data
+  axios.get('http://localhost:3000/user/get-user')
+  .then(res => {
+    console.log(res.data.appointments);
+      for (let i = 0; i < res.data.appointments.length; i++) {
+        showAllUsers(res.data.appointments[i]);
+      }
+  })
+  .catch(err => console.log("Error fetching user data in window add event listener"))
+}
 
-//     axios.get('http://localhost:8000/appointments')
-//     .then(res => {
-//         for (let i = 0; i < res.data.length; i++) {
-//             if(res.data[i].Done == false) showAllUsers(res.data[i]);
-//         }
-//         for (let i = 0; i < res.data.length; i++) {
-//             if(res.data[i].Done == true) showAllUsers(res.data[i]);
-//         }
-//     })
-//     .catch(err => console.log(err))
-// })
+window.addEventListener("DOMContentLoaded",()=>{
+    localStorageDataList.innerHTML = ""; // Clear previous data
+    axios.get('http://localhost:3000/user/get-user')
+    .then(res => {
+      console.log(res.data.appointments);
+        for (let i = 0; i < res.data.appointments.length; i++) {
+          showAllUsers(res.data.appointments[i]);
+        }
+    })
+    .catch(err => console.log("Error fetching user data in window add event listener"))
+})
 
-// function showAllUsers(print){
-//     const listItem = document.createElement("li");
-//             const deleteItem = document.createElement("button");
-//             deleteItem.textContent = "Delete";
-//             deleteItem.addEventListener('click', () => deleteElement(print._id));
+function showAllUsers(print){
+    const listItem = document.createElement("li");
+
+            const deleteItem = document.createElement("button");
+            deleteItem.textContent = "Delete";
+            deleteItem.addEventListener('click', () => deleteElement(print.id));
     
-//             // Add an Edit button
-//             const editItem = document.createElement("button");
-//             editItem.textContent = "Done";
-//             editItem.addEventListener('click', () => editElement(print._id, print));
+            listItem.textContent = `ID: ${print.id}, Name: ${print.name}, Time: ${print.Name}, Email: ${print.email}`;
     
-//             listItem.textContent = `Todo: ${print.Todo}, Description: ${print.Description}, Status: ${print.Done}`;
+            localStorageDataList.appendChild(listItem);
+            listItem.appendChild(deleteItem);
+}
+
+function deleteElement(id){
+    axios.delete(`http://localhost:3000/user/delete-user/${id}`)
+    .then((res)=>
+    {console.log("Delete Hogaya");
+    displayData();
+    })
+    .catch(err => console.log("err- Delete nahin ho raha"))
+
     
-//             localStorageDataList.appendChild(listItem);
-//             listItem.appendChild(editItem);
-//             listItem.appendChild(deleteItem);
-// }
-
-// function deleteElement(id){
-//     axios.delete(`http://localhost:8000/appointments`)
-//     .then(res => console.log('Hogaya Delete'))
-//     .catch(err => console.log(err))
-
-//     displayData();
-// }
+}
 
 
 // async function editElement(id) {
@@ -107,96 +116,96 @@
 // var time = document.getElementById('time');
 // var gmail = document.getElementById('gmail');
 
-function addAppointment() {
-    const nameInput = document.getElementById('aname');
-    const timeInput = document.getElementById('time');
-    const emailInput = document.getElementById('gmail');
+// function addAppointment() {
+//     const nameInput = document.getElementById('aname');
+//     const timeInput = document.getElementById('time');
+//     const emailInput = document.getElementById('gmail');
 
-    const name = nameInput.value;
-    const time = timeInput.value;
-    const email = emailInput.value;
+//     const name = nameInput.value;
+//     const time = timeInput.value;
+//     const email = emailInput.value;
 
-    axios.post('http://localhost:8000/appointments', {
-      Name: name,
-      Time: time,
-      Email: email,
-    //   Done: false
-    })
-      .then(res => {
-        console.log(res.data);
-        displayData();
-      })
-      .catch(err => console.log(err));
+//     axios.post('http://localhost:8000/appointments', {
+//       Name: name,
+//       Time: time,
+//       Email: email,
+//     //   Done: false
+//     })
+//       .then(res => {
+//         console.log(res.data);
+//         displayData();
+//       })
+//       .catch(err => console.log(err));
 
-    nameInput.value = '';
-    timeInput.value = '';
-    emailInput.value = '';
-  }
+//     nameInput.value = '';
+//     timeInput.value = '';
+//     emailInput.value = '';
+//   }
 
-  function displayData() {
-    const appointmentTable = document.getElementById('appointmentTable');
-    const tableBody = appointmentTable.querySelector('tbody');
+//   function displayData() {
+//     const appointmentTable = document.getElementById('appointmentTable');
+//     const tableBody = appointmentTable.querySelector('tbody');
 
-    axios.get('http://localhost:8000/appointments')
-      .then(res => {
-        tableBody.innerHTML = ''; // Clear previous data
+//     axios.get('http://localhost:8000/appointments')
+//       .then(res => {
+//         tableBody.innerHTML = ''; // Clear previous data
 
-        res.data.forEach(appointment => {
-          showAppointment(appointment);
-        });
-      })
-      .catch(err => console.log(err));
-  }
+//         res.data.forEach(appointment => {
+//           showAppointment(appointment);
+//         });
+//       })
+//       .catch(err => console.log(err));
+//   }
 
-  function showAppointment(appointment) {
-    const tableBody = document.querySelector('#appointmentTable tbody');
+//   function showAppointment(appointment) {
+//     const tableBody = document.querySelector('#appointmentTable tbody');
 
-    const row = tableBody.insertRow();
+//     const row = tableBody.insertRow();
 
-    const nameCell = row.insertCell(0);
-    nameCell.textContent = appointment.Name;
+//     const nameCell = row.insertCell(0);
+//     nameCell.textContent = appointment.Name;
 
-    const timeCell = row.insertCell(1);
-    timeCell.textContent = appointment.Time;
+//     const timeCell = row.insertCell(1);
+//     timeCell.textContent = appointment.Time;
 
-    const emailCell = row.insertCell(2);
-    emailCell.textContent = appointment.Email;
+//     const emailCell = row.insertCell(2);
+//     emailCell.textContent = appointment.Email;
 
-    const actionCell = row.insertCell(3);
-    const deleteButton = document.createElement('button');
-    deleteButton.textContent = 'Delete';
-    deleteButton.addEventListener('click', () => deleteAppointment(appointment._id));
+//     const actionCell = row.insertCell(3);
+//     const deleteButton = document.createElement('button');
+//     deleteButton.textContent = 'Delete';
+//     deleteButton.addEventListener('click', () => deleteAppointment(appointment._id));
 
-    const editButton = document.createElement('button');
-    editButton.textContent = 'Toggle Status';
-    editButton.addEventListener('click', () => toggleStatus(appointment._id, appointment.Done));
+//     const editButton = document.createElement('button');
+//     editButton.textContent = 'Toggle Status';
+//     editButton.addEventListener('click', () => toggleStatus(appointment._id, appointment.Done));
 
-    actionCell.appendChild(deleteButton);
-    actionCell.appendChild(editButton);
-  }
+//     actionCell.appendChild(deleteButton);
+//     actionCell.appendChild(editButton);
+//   }
 
-  function deleteAppointment(id) {
-    axios.delete(`http://localhost:8000/appointments/${id}`)
-      .then(res => {
-        console.log('Appointment deleted');
-        displayData();
-      })
-      .catch(err => console.log(err));
-  }
+//   function deleteAppointment(id) {
+//     axios.delete(`http://localhost:8000/appointments/${id}`)
+//       .then(res => {
+//         console.log('Appointment deleted');
+//         displayData();
+//       })
+//       .catch(err => console.log(err));
+//   }
 
-  function toggleStatus(id, currentStatus) {
-    const newStatus = !currentStatus;
+//   function toggleStatus(id, currentStatus) {
+//     const newStatus = !currentStatus;
 
-    axios.put(`http://localhost:8000/appointments/${id}`, {
-      Done: newStatus
-    })
-      .then(res => {
-        console.log('Status toggled');
-        displayData();
-      })
-      .catch(err => console.log(err));
-  }
+//     axios.put(`http://localhost:8000/appointments/${id}`, {
+//       Done: newStatus
+//     })
+//       .then(res => {
+//         console.log('Status toggled');
+//         displayData();
+//       })
+//       .catch(err => console.log(err));
+//   }
 
-  window.addEventListener("DOMContentLoaded", () => {
-    displayData();
-  });
+//   window.addEventListener("DOMContentLoaded", () => {
+//     displayData();
+//   });

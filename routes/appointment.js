@@ -11,7 +11,13 @@ const router = express.Router();
 router.get('/appointments', appointmentController.getProducts);
 
 // Route for adding a new appointment
-router.post('/add-product', appointmentController.postAddProduct);
+router.post('/user/add-user', appointmentController.postAddProduct);
+
+//  Route to get all the users
+router.get('/user/get-user', appointmentController.getProducts);
+
+
+router.delete('/user/delete-user/:id', appointmentController.deleteProducts);
 
 // Route for editing an existing appointment
 router.post('/edit-product', appointmentController.postEditProduct);

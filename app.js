@@ -1,25 +1,37 @@
 const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
-const cors = require('cors');  // Import the cors middleware
+const cors = require('cors');
 const sequelize = require('./util/database');
+const User = require('./models/appointment');
 
 const app = express();
 
-app.set('views', 'views');
-
-const appointmentRoutes = require('./routes/appointment');
-
+// Middleware
 app.use(cors());
-
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json()); // Add JSON body parsing middleware
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Routes
+const appointmentRoutes = require('./routes/appointment');
 
 app.use('/', appointmentRoutes);
 
+// Add a route for testing server status
+app.get('/', (req, res) => {
+  res.send('Server is running.');
+});
 
+// Database synchronization
 sequelize.sync()
-.then(result=>{console.log(result)})
-.catch(err=>console.log(err))
-
-app.listen(3000);
+  .then(() => {
+    console.log('Database synchronized.');
+    // Start the server after the database syncs successfully
+    app.listen(3000, () => {
+      console.log('Server is running on port');
+    });
+  })
+  .catch(err => {
+    console.error('Error syncing database:', err);
+  });

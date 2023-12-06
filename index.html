@@ -54,9 +54,9 @@
 
   <h2>Appointment Management</h2>
 
-  <form id="addAppointmentForm">
+  <form id="my-form">
     <label for="aname">Name :</label>
-    <input type="text" id="aname" name="aname" required>
+    <input type="text" id="name" name="aname" required>
 
     <label for="time">Time:</label>
     <input type="time" id="time" name="time" required>
@@ -64,12 +64,12 @@
     <label for="gmail">Email :</label>
     <input type="text" id="gmail" name="gmail" required>
 
-    <button type="button" onclick="addAppointment()">Add Appointment</button>
+    <button type="submit">Add Appointment</button>
   </form>
 
   <h2>Appointment Data</h2>
 
-  <table id="appointmentTable">
+  <table id="localStorageData">
     <thead>
       <tr>
         <th>Name</th>
@@ -79,7 +79,7 @@
         <th>Action</th>
       </tr>
     </thead>
-    <tbody></tbody>
+    <tbody id="localStorageDataList"></tbody>
   </table>
 
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
