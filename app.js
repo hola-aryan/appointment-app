@@ -1,9 +1,9 @@
 const path = require('path');
 const express = require('express');
-const bodyParser = require('body-parser');
+
 const cors = require('cors');
+
 const sequelize = require('./util/database');
-const User = require('./models/appointment');
 
 const app = express();
 
@@ -14,9 +14,9 @@ app.use(express.json()); // Add JSON body parsing middleware
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Routes
-const appointmentRoutes = require('./routes/appointment');
+const expenseRoutes = require('./routes/expenseRoutes');
 
-app.use('/', appointmentRoutes);
+app.use('/', expenseRoutes);
 
 // Add a route for testing server status
 app.get('/', (req, res) => {

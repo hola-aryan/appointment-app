@@ -5,82 +5,46 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Appointment Management</title>
   <style>
-    form {
-      width: 300px;
-      margin-top: 20px;
+    .form{
+      text-align: center;
+      margin: 100px;
+      padding: 10px;
+      border: 2px solid burlywood;
     }
-
-    label {
-      display: block;
-      margin-bottom: 8px;
-    }
-
-    input {
-      width: 100%;
-      padding: 8px;
-      margin-bottom: 10px;
-    }
-
     button {
       background-color: #4caf50;
       color: white;
       padding: 10px;
-      border: none;
+      border-radius: 10px;
+      border: 2px solid black;
       cursor: pointer;
     }
 
     button:hover {
-      background-color: #45a049;
+      background-color: #2c5c2e;
+      transition: 0.4s;
     }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
-
-    th, td {
-      border: 1px solid #ddd;
-      padding: 8px;
-      text-align: left;
-    }
-
-    th {
-      background-color: #f2f2f2;
-    }
+    
   </style>
 </head>
 <body>
+<div class="form">
 
-  <h2>Appointment Management</h2>
+  <h2> Expense Tracker </h2>
 
   <form id="my-form">
-    <label for="aname">Name :</label>
-    <input type="text" id="name" name="aname" required>
 
-    <label for="time">Time:</label>
-    <input type="time" id="time" name="time" required>
-    
-    <label for="gmail">Email :</label>
-    <input type="text" id="gmail" name="gmail" required>
-
-    <button type="submit">Add Appointment</button>
+    <input style="margin-bottom: 10px;" type="text" id="expense" name="expense" placeholder="Spent on" required> <br>
+    <input style="margin-bottom: 10px;" type="text" id="description" name="description" placeholder="Description" required> <br>
+    <input type="number" id="amount" name="amounts" placeholder="₹₹₹ Amount ₹₹₹" required><br><br>
+    <button type="submit">Spend</button>
   </form>
 
-  <h2>Appointment Data</h2>
 
-  <table id="localStorageData">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Time</th>
-        <th>Gmail</th>
-        <th>Status</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody id="localStorageDataList"></tbody>
-  </table>
+</div>
+  
+  <h2 style="text-align: center;">Appointment Data</h2>
 
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="main.js"></script>
